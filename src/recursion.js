@@ -4,13 +4,42 @@
 // denoted by n!, is the product of all positive integers less than or equal to n.
 // Example:  5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5);  // 120
-var factorial = function(n) {
- 
+var factorial = function(n, output=1) {
+ //base
+  if (n < 0){
+    return null;
+  } 
+  //is input is 0
+  if (n === 0){       // <-- i could keep this
+    //return 1 
+    return 1;         // <-- and change this to return output
+  }                    //and it would still work, without next if-statement 
+  if (n === 1){
+    return output;
+  }
+  // recursion
+  // how to add to output
+    //multiplying each time, starting with 1 (default param)
+  output *= n;
+  //then return at next lowest number, times the new output value
+ return factorial(n - 1, output);
 };
 
 // 2. Compute the sum of an array of integers.
 // Example:  sum([1, 2, 3, 4, 5, 6]);  // 21
-var sum = function(array) {
+var sum = function(array, output=0) {
+  //base 
+  //once array is empty
+if (array.length === 0){
+  //return the output
+  return output;
+}
+  //recursion
+//output += array[0] .. then slice at 1 index
+output += array[0];
+//return func call at array without 0 index and output
+return sum(array.slice(1), output);
+
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
@@ -19,19 +48,78 @@ var arraySum = function(array) {
 };
 
 // 4. Check if a number is even.
+//returns boolean
+// should not use modulo
 var isEven = function(n) {
+  // base
+  //if n is negative
+  if (n < 0){
+    //return at n + 2
+    return isEven(n + 2);
+  }
+  //if reaches 0
+  if (n === 0){
+    //return true
+    return true;
+  }
+  //if reaches 1 or -1
+  if (n === 1 || n === -1){
+    //return false
+    return false;
+  }
+  
+  //if pos, return func at n-2
+  return isEven(n - 2);
+
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
-var sumBelow = function(n) {
+var sumBelow = function(n, output=0) {
+  //output is accumulator
+  //base 
+  if (n === 0){
+    return output;
+  }
+  //recursion
+  //if n is negative, return func at n+1 with output. output += n+1
+  //when it reaches 0 (BC), return output
+  if (n < 0){
+    output += n+1;
+    return sumBelow(n+1, output);
+  }
+//if n is positive, return func at n-1 with output. ouput += n-1
+  //when it reaches 0 (BC), return output
+  output += n-1;
+  return sumBelow(n-1, output);
 };
 
 // 6. Get the integers in range (x, y).
 // Example:  range(2, 9);  // [3, 4, 5, 6, 7, 8]
-var range = function(x, y) {
-};
+var range = function(x, y, output=[]) {
+  //base case if either is 1 number away from the other or are the same
+  if (x === y-1 || y === x-1 || x === y){
+    //return output array
+    return output;
+  }
+  //recursion
+  //if x < y  
+  if (x < y){
+    //push x+1 into output array
+  output.push(x+1);
+    //return func at x+1, y, output
+  return range(x+1, y, output);
+  }
+  //if x > y    
+  if (x > y){
+  //push y-1 into output array
+  output.push(x-1);
+  //return func at x-1, y, output
+  return range(x-1, y, output);
+  }
+  
+  };
 
 // 7. Compute the exponent of a number.
 // The exponent of a number says how many times the base number is used as a factor.
@@ -39,6 +127,15 @@ var range = function(x, y) {
 // Example:  exponent(4,3);  // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  //base 
+  //if exp is 0
+  if (exp === 0){
+    //return 1 .. since any number to 0 power equals 1
+    return 1;
+  }
+  
+  //recursion
+
 };
 
 // 8. Determine if a number is a power of two.
@@ -46,14 +143,49 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  //base
+
+  //recursion
+
 };
 
 // 9. Write a function that accepts a string a reverses it.
-var reverse = function(string) {
+var reverse = function(string, output="") {
+  //base 
+  //if string is empty
+if (string.length === 0){
+  //return output
+  return output;
+}
+//output is assigned to last value in string each iteration
+output += string[string.length-1];
+  //recursion
+  //return func call at string without last value (string[string.length-1]) , output
+  return reverse(string.slice(0, -1), output);
 };
 
 // 10. Write a function that determines if a string is a palindrome.
+// ignore uppercase/lowercase. ignore spaces !
 var palindrome = function(string) {
+  //removing all spaces from <string>
+  string = string.replace(/\s+/g, '');
+  //base
+  //if string.length is 0 or 1 (depends if original length is even or odd)
+  if (string.length === 0 || string.length === 1){
+    //return true
+    return true;
+  }
+  //recursion
+  //if first and last string value (to lowercase) are equal
+  if (string[0].toLowerCase() === string[string.length-1].toLowerCase()){
+    // then slice them both off 
+    //return func at string without first and last value
+    return palindrome(string.slice(1, -1));
+    //else if first and last string values are not equal
+  } else {
+    //return false
+    return false;
+  }
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
